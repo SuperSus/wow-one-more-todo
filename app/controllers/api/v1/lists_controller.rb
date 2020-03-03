@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module API
+module Api
   module V1
     class ListsController < ApplicationController
       before_action :set_list, only: %i[show update destroy]
