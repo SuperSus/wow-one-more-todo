@@ -3,12 +3,14 @@ import axios from "axios";
 
 import List from "./ List";
 import NewListForm from "./NewListForm";
+import EditListForm from "./EditItemForm";
 
 class ListsContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      lists: []
+      lists: [],
+      editingListId: null
     };
   }
 
@@ -24,7 +26,7 @@ class ListsContainer extends Component {
       .catch(error => console.log(error));
   }
 
-  addNewList = (title, excerpt) => {
+  addNewItem = (title, excerpt) => {
     axios
       .post("/api/v1/lists", { list: { title, excerpt } })
       .then(response => {
@@ -48,13 +50,44 @@ class ListsContainer extends Component {
       .catch(error => console.log(error));
   };
 
+  editList = ({ id, title, excerpt }) => {
+    axios
+      .put(`/api/v1/lists/${id}`, { list: { title, excerpt } })
+      .then(response => {
+        this.setState(({ lists }) => {
+          const listsDup = [...lists];
+          let editingListIndex = listsDup.find(item => item.id === id);
+          listsDup[editingListIndex] = { id, title, excerpt };
+          return { lists: listsDup, editingListId: null };
+        });
+      })
+      .catch(error => console.log(error));
+  };
+
+  setEditingList = id => {
+    this.setState({ editingListId: id });
+  };
+
   render() {
+    const { lists, editingListId } = this.state;
     return (
       <div className="lists-container">
-        {this.state.lists.map(list => (
-          <List list={list} removeHandler={this.removeList} key={list.id} />
+        {lists.map(list => (
+          <div key={list.id}>
+            <div>
+              <List
+                list={list}
+                removeHandler={this.removeList}
+                editHandler={this.setEditingList}
+              />
+              {list.id === editingListId && (
+                <EditListForm list={list} submitHandler={this.editList} />
+              )}
+            </div>
+            <hr />
+          </div>
         ))}
-        <NewListForm onNewList={this.addNewList} />
+        <NewListForm onNewList={this.addNewItem} />
       </div>
     );
   }
