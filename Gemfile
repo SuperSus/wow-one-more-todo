@@ -30,6 +30,7 @@ gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  gem 'foreman'
   gem 'pry', '~> 0.12.2'
   gem 'pry-byebug'
   gem 'pry-highlight'

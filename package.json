@@ -1,0 +1,16 @@
+{
+  "name": "wow-onep-more-todo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:SuperSus/wow-one-more-todo.git",
+  "author": "SuperSus <nickvasilevski35@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": "12.14.1"
+  },
+  "scripts": {
+    "build": "cd client && yarn install && yarn run build && cd ..",
+    "deploy": "cp -a client/build/. public/",
+    "postinstall": "yarn run build && yarn run deploy && echo 'Client built!'"
+  }
+}
