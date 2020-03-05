@@ -22,7 +22,7 @@ module Api
         @list = List.new(list_params)
 
         if @list.save
-          render json: @list, status: :created, location: @list
+          render json: @list, status: :created, location: api_v1_list_url(@list)
         else
           render json: @list.errors, status: :unprocessable_entity
         end
